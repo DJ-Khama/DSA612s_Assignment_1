@@ -1,0 +1,142 @@
+openapi: 3.1.0
+info:
+  title: Faculty API
+  version: 1.0.0
+paths:
+  /lecturers:
+    get:
+      summary: Get all lecturers
+      responses:
+        200:
+          description: List of all lecturers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+    post:
+      summary: Add a new lecturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        201:
+          description: New lecturer created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+  /lecturers/{staffNumber}:
+    get:
+      summary: Get a specific lecturer by staff number
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Lecturer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+    put:
+      summary: Update an existing lecturer
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        200:
+          description: Updated lecturer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+    delete:
+      summary: Delete a lecturer by staff number
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Lecturer deleted
+  /courses/{courseCode}/lecturers:
+    get:
+      summary: Get all lecturers teaching a specific course
+      parameters:
+        - name: courseCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of lecturers teaching the course
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+  /offices/{officeNumber}/lecturers:
+    get:
+      summary: Get all lecturers sitting in the same office
+      parameters:
+        - name: officeNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of lecturers in the office
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+components:
+  schemas:
+    Lecturer:
+      type: object
+      properties:
+        staffNumber:
+          type: string
+        officeNumber:
+          type: string
+        staffName:
+          type: string
+        title:
+          type: string
+        courses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+    Course:
+      type: object
+      properties:
+        courseName:
+          type: string
+        courseCode:
+          type: string
+        nqfLevel:
+          type: integer
